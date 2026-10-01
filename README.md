@@ -32,10 +32,10 @@ FastAPI
 SQLAlchemy
    ↓
 SQLite
-
+```
 Burp Suite can be placed between the browser and API during security testing to intercept and modify HTTP requests.
 
-Features
+## Features
 User registration and login
 Car listing
 Car details
@@ -45,10 +45,11 @@ User profile
 Wallet
 Password reset / OTP flow
 Roadside assistance
-Security Testing Scenarios
+
+
+## Security Testing Scenarios
 
 The application contains intentionally vulnerable scenarios for educational API security testing, including:
-
 BOLA
 BFLA
 BOPLA
@@ -57,29 +58,32 @@ JWT security issues
 Parameter tampering
 Business logic vulnerabilities
 OTP brute-force / missing rate limiting
-Testing Tools
+
+## Testing Tools
 Burp Suite
 Browser Developer Tools
 Swagger UI
 Postman
-Running the Project
+
+## Running the Project
 
 Install the required dependencies:
-
+```
 pip install -r requirements.txt
-
+```
 Start the FastAPI application:
-
+```
 uvicorn main:app --reload
-
+```
 Open the application:
-
+```
 http://127.0.0.1:8000
-
+```
 Swagger API documentation:
-
+```
 http://127.0.0.1:8000/docs
-Security Testing
+```
+## Security Testing
 
 The project is intended to be tested locally with Burp Suite.
 
@@ -93,7 +97,8 @@ JWT
 Parameter Tampering
 Business Logic
 OTP Rate Limiting
-Disclaimer
+
+## Disclaimer
 
 VulnAPI is intentionally vulnerable and is created only for educational and authorized security-testing purposes.
 
