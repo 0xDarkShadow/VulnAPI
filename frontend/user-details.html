@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+>
+
+<title>VulnAPI - User Details</title>
+
+
+<style>
+
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f5f5;
+        color: #222;
+    }
+
+
+    header {
+        background: #111;
+        color: white;
+
+        padding: 20px 50px;
+
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+
+    header h1 {
+        font-size: 26px;
+    }
+
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin-left: 25px;
+    }
+
+
+    nav a:hover {
+        color: #ccc;
+    }
+
+
+    .details-container {
+        max-width: 600px;
+        margin: 70px auto;
+        padding: 20px;
+    }
+
+
+    .details-card {
+        background: white;
+
+        border-radius: 15px;
+
+        padding: 40px;
+
+        box-shadow:
+            0 4px 20px rgba(0, 0, 0, 0.12);
+    }
+
+
+    .details-card h2 {
+        text-align: center;
+
+        font-size: 28px;
+
+        margin-bottom: 30px;
+    }
+
+
+    .profile-icon {
+        width: 100px;
+        height: 100px;
+
+        margin: 0 auto 25px;
+
+        border-radius: 50%;
+
+        background: #e5e5e5;
+
+        display: flex;
+
+        align-items: center;
+
+        justify-content: center;
+
+        font-size: 55px;
+
+        color: #777;
+    }
+
+
+    .info-row {
+        display: flex;
+
+        justify-content: space-between;
+
+        padding: 16px 0;
+
+        border-bottom: 1px solid #eee;
+    }
+
+
+    .info-label {
+        font-weight: bold;
+
+        color: #555;
+    }
+
+
+    .info-value {
+        color: #222;
+
+        text-align: right;
+    }
+
+
+    .back-btn {
+        display: block;
+
+        width: fit-content;
+
+        margin: 30px auto 0;
+
+        padding: 12px 25px;
+
+        background: #111;
+
+        color: white;
+
+        text-decoration: none;
+
+        border-radius: 6px;
+    }
+
+
+    .back-btn:hover {
+        background: #333;
+    }
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>
+        VulnAPI
+    </h1>
+
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+        <a href="/cars">
+            Cars
+        </a>
+
+        <a href="/roadsideassistance">
+            Roadside Assistance
+        </a>
+
+        <a href="/booking">
+            My Bookings
+        </a>
+
+        <a href="/myprofile">
+            My Profile
+        </a>
+
+        <a
+            href="#"
+            onclick="logout(); return false;"
+        >
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<div class="details-container">
+
+    <div class="details-card">
+
+
+        <div class="profile-icon">
+            👤
+        </div>
+
+
+        <h2>
+            User Details
+        </h2>
+
+
+
+        <!-- USERNAME -->
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Username
+            </span>
+
+            <span
+                class="info-value"
+                id="username"
+            >
+                Loading...
+            </span>
+
+        </div>
+
+
+
+        <!-- EMAIL -->
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Email
+            </span>
+
+            <span
+                class="info-value"
+                id="email"
+            >
+                Loading...
+            </span>
+
+        </div>
+
+
+
+        <!-- USER ID -->
+
+        <div class="info-row">
+
+            <span class="info-label">
+                User ID
+            </span>
+
+            <span
+                class="info-value"
+                id="userId"
+            >
+                Loading...
+            </span>
+
+        </div>
+
+
+
+        <!-- WALLET -->
+
+        <div class="info-row">
+
+            <span class="info-label">
+                Wallet
+            </span>
+
+            <span
+                class="info-value"
+                id="wallet"
+            >
+                Loading...
+            </span>
+
+        </div>
+
+
+
+        <a
+            href="/myprofile"
+            class="back-btn"
+        >
+            Back to Profile
+        </a>
+
+
+    </div>
+
+</div>
+
+
+
+<script>
+
+
+    // =====================================
+    // GET USER ID FROM URL
+    // =====================================
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+
+    const userId =
+        params.get("user_id");
+
+
+
+    // =====================================
+    // CHECK USER ID
+    // =====================================
+
+    if (!userId) {
+
+        window.location.href =
+            "/myprofile";
+
+    }
+
+
+
+    // =====================================
+    // LOAD USER DETAILS
+    // =====================================
+    //
+    // BOLA LAB
+    //
+    // GET /api/user/{user_id}
+    //
+    // Example:
+    //
+    // GET /api/user/2
+    //
+    // =====================================
+
+    async function loadUserDetails() {
+
+        try {
+
+            const response =
+                await fetch(
+                    `/api/user/${userId}`
+                );
+
+
+
+            // =================================
+            // CHECK RESPONSE
+            // =================================
+
+            if (!response.ok) {
+
+                console.log(
+                    "Failed to load user details:",
+                    response.status
+                );
+
+
+                document.getElementById(
+                    "username"
+                ).innerText =
+                    "Unable to load";
+
+
+                document.getElementById(
+                    "email"
+                ).innerText =
+                    "Unable to load";
+
+
+                document.getElementById(
+                    "userId"
+                ).innerText =
+                    "Unable to load";
+
+
+                document.getElementById(
+                    "wallet"
+                ).innerText =
+                    "Unable to load";
+
+
+                return;
+
+            }
+
+
+
+            // =================================
+            // PARSE JSON
+            // =================================
+
+            const data =
+                await response.json();
+
+
+
+            // =================================
+            // SHOW API RESPONSE
+            // =================================
+
+            console.log(
+                "User Details API Response:",
+                data
+            );
+
+
+
+            // =================================
+            // USERNAME
+            // =================================
+
+            document.getElementById(
+                "username"
+            ).innerText =
+                data.username || "N/A";
+
+
+
+            // =================================
+            // EMAIL
+            // =================================
+
+            document.getElementById(
+                "email"
+            ).innerText =
+                data.email || "N/A";
+
+
+
+            // =================================
+            // USER ID
+            // =================================
+
+            document.getElementById(
+                "userId"
+            ).innerText =
+                data.id ?? "N/A";
+
+
+
+            // =================================
+            // WALLET
+            // =================================
+
+            document.getElementById(
+                "wallet"
+            ).innerText =
+                "$" +
+                Number(
+                    data.balance || 0
+                ).toFixed(2);
+
+        }
+
+
+        catch (error) {
+
+            console.log(
+                "User details error:",
+                error
+            );
+
+        }
+
+    }
+
+
+
+    // =====================================
+    // LOGOUT
+    // =====================================
+
+    function logout() {
+
+        localStorage.removeItem(
+            "user_id"
+        );
+
+
+        localStorage.removeItem(
+            "username"
+        );
+
+
+        localStorage.removeItem(
+            "access_token"
+        );
+
+
+        localStorage.removeItem(
+            "role"
+        );
+
+
+        localStorage.removeItem(
+            "profile_user_id"
+        );
+
+
+        window.location.href =
+            "/login";
+
+    }
+
+
+
+    // =====================================
+    // LOAD DETAILS
+    // =====================================
+
+    loadUserDetails();
+
+
+</script>
+
+
+</body>
+
+</html>

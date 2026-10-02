@@ -1,0 +1,2626 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Bookings - VulnAPI</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fa;
+            color: #222;
+        }
+
+
+        header {
+            background: #111827;
+            color: white;
+            padding: 20px 60px;
+
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+
+        .logo {
+            font-size: 25px;
+            font-weight: bold;
+        }
+
+
+        nav a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 15px;
+        }
+
+
+        nav a:hover {
+            color: #ccc;
+        }
+
+
+        .container {
+            max-width: 1050px;
+            margin: 45px auto;
+            padding: 20px;
+        }
+
+
+        h1 {
+            margin-bottom: 10px;
+        }
+
+
+        .subtitle {
+            color: #6b7280;
+            margin-bottom: 25px;
+        }
+
+
+        /* WALLET */
+
+        .wallet-box {
+            background: #111827;
+            color: white;
+            border-radius: 14px;
+            padding: 28px;
+            margin-bottom: 30px;
+
+            box-shadow:
+                0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+
+        .wallet-title {
+            color: #d1d5db;
+            font-size: 14px;
+            margin-bottom: 6px;
+        }
+
+
+        .wallet-balance {
+            font-size: 36px;
+            font-weight: bold;
+        }
+
+
+        .wallet-subtitle {
+            color: #9ca3af;
+            font-size: 13px;
+            margin-top: 6px;
+        }
+
+
+        /* BOOKING FORM */
+
+        .booking-form {
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.07);
+
+            margin-bottom: 40px;
+        }
+
+
+        .booking-form h2 {
+            margin-bottom: 20px;
+        }
+
+
+        .selected-car {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+
+        .selected-car-image {
+            width: 220px;
+            height: 140px;
+
+            background: #e5e7eb;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+
+        .selected-car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        .car-details h3 {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+
+        .car-details p {
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+
+        .days-section {
+            margin-top: 25px;
+        }
+
+
+        .days-section label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+
+
+        .days-section input {
+            width: 100%;
+            padding: 13px;
+
+            border: 1px solid #ccc;
+            border-radius: 7px;
+
+            font-size: 16px;
+        }
+
+
+        .total-panel {
+            margin-top: 20px;
+            background: #eff6ff;
+
+            border-radius: 10px;
+            padding: 18px;
+        }
+
+
+        .total-title {
+            color: #6b7280;
+            margin-bottom: 8px;
+        }
+
+
+        .total-usd {
+            font-size: 25px;
+            font-weight: bold;
+            color: #2563eb;
+        }
+
+
+        .balance-note {
+            margin-top: 10px;
+            color: #4b5563;
+        }
+
+
+        .create-btn {
+            width: 100%;
+            padding: 14px;
+            margin-top: 20px;
+
+            background: #111827;
+            color: white;
+
+            border: none;
+            border-radius: 8px;
+
+            font-size: 16px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .create-btn:hover {
+            background: #374151;
+        }
+
+
+        /* BOOKING CARD */
+
+        .booking-card {
+            background: white;
+            padding: 25px;
+            margin-bottom: 20px;
+
+            border-radius: 12px;
+
+            box-shadow:
+                0 4px 15px rgba(0, 0, 0, 0.07);
+        }
+
+
+        .booking-card.cancelled-card {
+            border: 2px solid #fecaca;
+            background: #fffafa;
+        }
+
+
+        .booking-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+
+        .booking-header h2 {
+            margin: 0;
+        }
+
+
+        /* STATUS */
+
+        .status {
+            padding: 7px 13px;
+            border-radius: 999px;
+
+            font-size: 13px;
+            font-weight: bold;
+        }
+
+
+        .pending {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+
+        .paid {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+
+        .cancelled {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+
+        /* CAR */
+
+        .car-section {
+            display: flex;
+            gap: 20px;
+
+            align-items: center;
+            margin-bottom: 25px;
+        }
+
+
+        .car-image {
+            width: 180px;
+            height: 120px;
+
+            background: #e5e7eb;
+
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+
+        .car-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+
+        .car-section h3 {
+            margin-bottom: 6px;
+        }
+
+
+        .car-section p {
+            color: #6b7280;
+            margin-bottom: 5px;
+        }
+
+
+        /* BOOKING INFO */
+
+        .booking-info {
+            display: grid;
+
+            grid-template-columns:
+                repeat(3, 1fr);
+
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+
+        .info {
+            background: #f3f4f6;
+            padding: 15px;
+
+            border-radius: 8px;
+        }
+
+
+        .info span {
+            display: block;
+
+            color: #6b7280;
+            font-size: 13px;
+
+            margin-bottom: 5px;
+        }
+
+
+        .info strong {
+            font-size: 17px;
+        }
+
+
+        /* MONEY */
+
+        .money-box {
+            background: #eff6ff;
+
+            padding: 18px;
+            border-radius: 10px;
+
+            margin-bottom: 20px;
+        }
+
+
+        .money-box .label {
+            color: #6b7280;
+            font-size: 13px;
+
+            margin-bottom: 6px;
+        }
+
+
+        .money-box .usd {
+            color: #2563eb;
+
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+
+        /* BUTTONS */
+
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+
+        .pay-btn,
+        .cancel-btn,
+        .done-btn {
+            padding: 13px 18px;
+
+            border: none;
+            border-radius: 8px;
+
+            font-size: 15px;
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+
+        .pay-btn {
+            background: #16a34a;
+            color: white;
+            flex: 1;
+        }
+
+
+        .pay-btn:hover {
+            background: #15803d;
+        }
+
+
+        .pay-btn:disabled {
+            opacity: 0.7;
+            cursor: wait;
+        }
+
+
+        .cancel-btn {
+            background: #dc2626;
+            color: white;
+            flex: 1;
+        }
+
+
+        .cancel-btn:hover {
+            background: #b91c1c;
+        }
+
+
+        .done-btn {
+            background: #d1d5db;
+            color: #374151;
+
+            cursor: not-allowed;
+            width: 100%;
+        }
+
+
+        /* MESSAGE */
+
+        .message {
+            background: white;
+
+            padding: 40px;
+
+            text-align: center;
+
+            border-radius: 12px;
+        }
+
+
+        .back {
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: bold;
+        }
+
+
+        .success {
+            color: green;
+
+            margin-top: 15px;
+
+            font-weight: bold;
+        }
+
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            header {
+                padding: 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+            }
+
+
+            nav {
+                display: flex;
+
+                flex-wrap: wrap;
+
+                gap: 10px;
+
+                justify-content: center;
+            }
+
+
+            nav a {
+                margin-left: 10px;
+                margin-right: 10px;
+            }
+
+
+            .selected-car {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .selected-car-image {
+                width: 100%;
+            }
+
+
+            .booking-info {
+                grid-template-columns: 1fr;
+            }
+
+
+            .car-section {
+                flex-direction: column;
+
+                align-items: flex-start;
+            }
+
+
+            .car-image {
+                width: 100%;
+            }
+
+
+            .actions {
+                flex-direction: column;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        VulnAPI
+    </div>
+
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+
+        <a href="/cars">
+            Cars
+        </a>
+
+
+        <a href="/roadsideassistance">
+            Roadside Assistance
+        </a>
+
+
+        <a href="/booking">
+            My Bookings
+        </a>
+
+
+        <!-- ONLY LOGGED-IN USER -->
+
+        <a
+            href="/myprofile"
+            id="profileLink"
+            style="display: none;"
+            onclick="return openProfile();"
+        >
+            My Profile
+        </a>
+
+
+        <!-- LOGGED-OUT USER -->
+
+        <a
+            href="/login"
+            id="loginLink"
+        >
+            Login
+        </a>
+
+
+        <!-- LOGGED-IN USER -->
+
+        <a
+            href="#"
+            id="logoutLink"
+            style="display: none;"
+            onclick="logout(); return false;"
+        >
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+<div class="container">
+
+
+    <a
+        href="/cars"
+        class="back"
+    >
+        ← Back to Cars
+    </a>
+
+
+    <h1>
+        My Bookings
+    </h1>
+
+
+    <p class="subtitle">
+        Manage your bookings and wallet
+    </p>
+
+
+    <!-- WALLET -->
+
+    <div class="wallet-box">
+
+        <div class="wallet-title">
+
+            <span id="walletUserName">
+                User
+            </span>'s Wallet
+
+        </div>
+
+
+        <div class="wallet-balance">
+
+            $<span id="walletBalance">
+                500.00
+            </span>
+
+        </div>
+
+
+        <div class="wallet-subtitle">
+            Available Balance
+        </div>
+
+    </div>
+
+
+    <!-- CREATE BOOKING -->
+
+    <div
+        id="bookingForm"
+        class="booking-form"
+        style="display: none;"
+    >
+
+        <h2>
+            Book Selected Car
+        </h2>
+
+
+        <div class="selected-car">
+
+            <div class="selected-car-image">
+
+                <img
+                    id="selectedCarImage"
+                    src=""
+                    alt="Selected Car"
+                >
+
+            </div>
+
+
+            <div class="car-details">
+
+                <h3 id="selectedCarName">
+                    Car
+                </h3>
+
+
+                <p id="selectedCarBrand">
+                    Brand
+                </p>
+
+
+                <p id="selectedCarPrice">
+                    $0.00 / day
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <div class="days-section">
+
+            <label for="days">
+                Number of Days
+            </label>
+
+
+            <input
+                type="number"
+                id="days"
+                min="1"
+                value="1"
+                oninput="calculateTotal()"
+            >
+
+        </div>
+
+
+        <div class="total-panel">
+
+            <div class="total-title">
+                Total Booking Amount
+            </div>
+
+
+            <div class="total-usd">
+
+                $<span id="totalUSD">
+                    0.00
+                </span>
+
+            </div>
+
+
+            <div class="balance-note">
+
+                Wallet Balance:
+
+                $<span id="bookingWalletBalance">
+                    500.00
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="create-btn"
+            onclick="createBooking()"
+        >
+            Create Booking
+        </button>
+
+
+        <p
+            id="bookingMessage"
+            class="success"
+        ></p>
+
+    </div>
+
+
+    <!-- MY BOOKINGS -->
+
+    <div id="bookingsContainer">
+
+        <div class="message">
+            Loading bookings...
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+
+/* ========================================================= */
+/* GLOBAL VARIABLES */
+/* ========================================================= */
+
+const userId =
+    localStorage.getItem("user_id");
+
+
+const username =
+    localStorage.getItem("username") || "User";
+
+
+const accessToken =
+    localStorage.getItem("access_token");
+
+
+const USD_RATE = 90;
+
+
+let selectedCar = null;
+
+
+let walletBalance = 500;
+
+
+let currentBookings = [];
+
+
+
+/* ========================================================= */
+/* LOGIN / LOGOUT NAVIGATION */
+/* ========================================================= */
+
+const walletUserName =
+    document.getElementById(
+        "walletUserName"
+    );
+
+
+if (walletUserName) {
+
+    walletUserName.innerText =
+        username;
+
+}
+
+
+
+const loginLink =
+    document.getElementById(
+        "loginLink"
+    );
+
+
+const logoutLink =
+    document.getElementById(
+        "logoutLink"
+    );
+
+
+const profileLink =
+    document.getElementById(
+        "profileLink"
+    );
+
+
+
+/*
+ * LOGIN STATE
+ *
+ * User ko logged-in tabhi
+ * maana jayega jab user_id
+ * aur access_token dono available hon.
+ */
+
+const isLoggedIn =
+    Boolean(
+        userId &&
+        accessToken
+    );
+
+
+
+if (isLoggedIn) {
+
+    loginLink.style.display =
+        "none";
+
+    logoutLink.style.display =
+        "inline-block";
+
+    profileLink.style.display =
+        "inline-block";
+
+}
+
+else {
+
+    loginLink.style.display =
+        "inline-block";
+
+    logoutLink.style.display =
+        "none";
+
+    profileLink.style.display =
+        "none";
+
+}
+
+
+
+/* ========================================================= */
+/* OPEN PROFILE */
+/* ========================================================= */
+
+function openProfile() {
+
+    const currentUserId =
+        localStorage.getItem(
+            "user_id"
+        );
+
+
+    const currentToken =
+        localStorage.getItem(
+            "access_token"
+        );
+
+
+    /*
+     * Agar proper login state hai
+     * to /myprofile open karo.
+     */
+
+    if (
+        currentUserId &&
+        currentToken
+    ) {
+
+        window.location.href =
+            "/myprofile";
+
+        return false;
+
+    }
+
+
+    /*
+     * Agar login state nahi hai
+     * to login page.
+     */
+
+    window.location.href =
+        "/login";
+
+
+    return false;
+
+}
+
+
+
+/* ========================================================= */
+/* LOGOUT */
+/* ========================================================= */
+
+function logout() {
+
+    localStorage.removeItem(
+        "user_id"
+    );
+
+
+    localStorage.removeItem(
+        "username"
+    );
+
+
+    localStorage.removeItem(
+        "access_token"
+    );
+
+
+    localStorage.removeItem(
+        "role"
+    );
+
+
+    localStorage.removeItem(
+        "profile_user_id"
+    );
+
+
+    window.location.href =
+        "/login";
+
+}
+
+
+
+/* ========================================================= */
+/* CAR IMAGES */
+/* ========================================================= */
+
+const carImages = {
+
+    1: "images/defender.jpg",
+
+    2: "images/x5.jpg",
+
+    3: "images/cclass.jpg",
+
+    4: "images/q5.jpg",
+
+    5: "images/FORTUNER.jpg",
+
+    6: "images/xc90.jpg"
+
+};
+
+
+
+/* ========================================================= */
+/* SELECTED CAR FROM URL */
+/* ========================================================= */
+
+const urlParams =
+    new URLSearchParams(
+        window.location.search
+    );
+
+
+const selectedCarId =
+    urlParams.get("car_id");
+
+
+
+/* ========================================================= */
+/* LOAD WALLET */
+/* ========================================================= */
+
+async function loadWallet() {
+
+    if (!userId) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/wallet/${userId}`
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (
+            response.ok &&
+            result.success
+        ) {
+
+            walletBalance =
+                Number(
+                    result.balance
+                );
+
+
+            updateWalletUI();
+
+        }
+
+    }
+
+    catch (error) {
+
+        console.error(
+            "Wallet error:",
+            error
+        );
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* UPDATE WALLET UI */
+/* ========================================================= */
+
+function updateWalletUI() {
+
+    const walletElement =
+        document.getElementById(
+            "walletBalance"
+        );
+
+
+    const bookingWalletElement =
+        document.getElementById(
+            "bookingWalletBalance"
+        );
+
+
+    if (walletElement) {
+
+        walletElement.innerText =
+            walletBalance.toFixed(2);
+
+    }
+
+
+    if (bookingWalletElement) {
+
+        bookingWalletElement.innerText =
+            walletBalance.toFixed(2);
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* LOAD SELECTED CAR */
+/* ========================================================= */
+
+async function loadSelectedCar() {
+
+    if (!selectedCarId) {
+        return;
+    }
+
+
+    if (!userId) {
+
+        alert(
+            "Please login first."
+        );
+
+
+        window.location.href =
+            "/login";
+
+
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/cars/${selectedCarId}`
+            );
+
+
+        const car =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !car.id
+        ) {
+
+            alert(
+                "Car not found."
+            );
+
+
+            return;
+
+        }
+
+
+        selectedCar =
+            car;
+
+
+        document.getElementById(
+            "bookingForm"
+        ).style.display =
+            "block";
+
+
+        document.getElementById(
+            "selectedCarName"
+        ).innerText =
+            car.name;
+
+
+        document.getElementById(
+            "selectedCarBrand"
+        ).innerText =
+            car.brand;
+
+
+        document.getElementById(
+            "selectedCarPrice"
+        ).innerText =
+            `$${(
+                Number(car.price) /
+                USD_RATE
+            ).toFixed(2)} / day`;
+
+
+        document.getElementById(
+            "selectedCarImage"
+        ).src =
+            carImages[car.id] || "";
+
+
+        calculateTotal();
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Selected car error:",
+            error
+        );
+
+
+        alert(
+            "Unable to load car details."
+        );
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* CALCULATE TOTAL */
+/* ========================================================= */
+
+function calculateTotal() {
+
+    if (!selectedCar) {
+        return;
+    }
+
+
+    const days =
+        parseInt(
+            document.getElementById(
+                "days"
+            ).value
+        ) || 0;
+
+
+    const totalINR =
+        selectedCar.price *
+        days;
+
+
+    const totalUSD =
+        totalINR /
+        USD_RATE;
+
+
+    document.getElementById(
+        "totalUSD"
+    ).innerText =
+        totalUSD.toFixed(2);
+
+
+    document.getElementById(
+        "bookingWalletBalance"
+    ).innerText =
+        walletBalance.toFixed(2);
+
+}
+
+
+
+/* ========================================================= */
+/* CREATE BOOKING */
+/* ========================================================= */
+
+async function createBooking() {
+
+    if (!userId) {
+
+        alert(
+            "Please login first."
+        );
+
+        return;
+
+    }
+
+
+    if (!selectedCar) {
+
+        alert(
+            "Please select a car."
+        );
+
+        return;
+
+    }
+
+
+    const days =
+        parseInt(
+            document.getElementById(
+                "days"
+            ).value
+        );
+
+
+    if (!days || days < 1) {
+
+        alert(
+            "Please enter at least 1 day."
+        );
+
+        return;
+
+    }
+
+
+    const totalINR =
+        selectedCar.price *
+        days;
+
+
+    const totalUSD =
+        totalINR /
+        USD_RATE;
+
+
+    if (
+        walletBalance <
+        totalUSD
+    ) {
+
+        alert(
+            "Insufficient wallet balance.\n\n" +
+
+            "Required: $" +
+            totalUSD.toFixed(2) +
+
+            "\nAvailable: $" +
+            walletBalance.toFixed(2)
+        );
+
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/bookings?user_id=${userId}&car_id=${selectedCar.id}&days=${days}`,
+                {
+                    method: "POST"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (
+            response.ok &&
+            (
+                result.booking_id ||
+                result.id
+            )
+        ) {
+
+            alert(
+                "Booking created successfully!\n\n" +
+
+                "Booking ID: " +
+
+                (
+                    result.booking_id ||
+                    result.id
+                ) +
+
+                "\nCar: " +
+
+                selectedCar.brand +
+                " " +
+                selectedCar.name +
+
+                "\nDays: " +
+                result.days +
+
+                "\nTotal: $" +
+
+                Number(
+                    result.total_usd ||
+                    totalUSD
+                ).toFixed(2) +
+
+                "\n\nStatus: Pending Payment"
+            );
+
+
+            window.history.replaceState(
+                {},
+                document.title,
+                "/booking"
+            );
+
+
+            document.getElementById(
+                "bookingForm"
+            ).style.display =
+                "none";
+
+
+            await loadBookings();
+
+        }
+
+        else {
+
+            alert(
+                result.message ||
+                "Booking failed."
+            );
+
+        }
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Create booking error:",
+            error
+        );
+
+
+        alert(
+            "Unable to connect to server."
+        );
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* GET CAR DETAILS */
+/* ========================================================= */
+
+async function getCar(
+    carId
+) {
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/cars/${carId}`
+            );
+
+
+        if (!response.ok) {
+            return null;
+        }
+
+
+        return await response.json();
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Car details error:",
+            error
+        );
+
+
+        return null;
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* BUILD ONE BOOKING CARD */
+/* ========================================================= */
+
+function buildBookingCard(
+    booking,
+    car,
+    clickable = true
+) {
+
+    const bookingId =
+        booking.booking_id ||
+        booking.id;
+
+
+    const status =
+        booking.status ||
+        "Pending Payment";
+
+
+    const carName =
+        car && car.name
+            ? car.name
+            : "Unknown Car";
+
+
+    const carBrand =
+        car && car.brand
+            ? car.brand
+            : "Unknown Brand";
+
+
+    const image =
+        carImages[
+            booking.car_id
+        ] || "";
+
+
+    const totalINR =
+        Number(
+            booking.total_price ||
+            0
+        );
+
+
+    const totalUSD =
+        Number(
+            booking.total_usd ||
+            (
+                totalINR /
+                USD_RATE
+            )
+        );
+
+
+    let statusClass =
+        "pending";
+
+
+    if (
+        status ===
+        "Payment Successful"
+    ) {
+
+        statusClass =
+            "paid";
+
+    }
+
+    else if (
+        status ===
+        "Cancelled"
+    ) {
+
+        statusClass =
+            "cancelled";
+
+    }
+
+
+    let actionHTML = "";
+
+
+    if (
+        status ===
+        "Payment Successful"
+    ) {
+
+        actionHTML = `
+
+            <div class="actions">
+
+                <button
+                    class="done-btn"
+                    disabled
+                >
+                    ✓ Payment Successful
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    else if (
+        status ===
+        "Cancelled"
+    ) {
+
+        actionHTML = `
+
+            <div class="actions">
+
+                <button
+                    class="done-btn"
+                    disabled
+                >
+                    Booking Cancelled
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    else {
+
+        actionHTML = `
+
+            <div class="actions">
+
+                <button
+                    class="pay-btn"
+                    onclick="
+                        event.stopPropagation();
+                        payNow(${bookingId});
+                    "
+                >
+                    Pay Now
+                </button>
+
+
+                <button
+                    class="cancel-btn"
+                    onclick="
+                        event.stopPropagation();
+                        cancelBooking(${bookingId});
+                    "
+                >
+                    Cancel Booking
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+
+    const clickStyle =
+        clickable
+            ? `
+                cursor: pointer;
+                transition: 0.2s;
+            `
+            : "";
+
+
+    const clickAction =
+        clickable
+            ? `
+                onclick="showOnlyBooking(${bookingId})"
+            `
+            : "";
+
+
+    return `
+
+        <div
+            class="booking-card"
+
+            ${clickAction}
+
+            style="${clickStyle}"
+
+            onmouseover="
+                if (${clickable}) {
+                    this.style.transform='translateY(-2px)';
+                }
+            "
+
+            onmouseout="
+                if (${clickable}) {
+                    this.style.transform='translateY(0)';
+                }
+            "
+        >
+
+
+            <div class="booking-header">
+
+                <h2>
+                    Booking #${bookingId}
+                </h2>
+
+
+                <span
+                    class="status ${statusClass}"
+                >
+                    ${status}
+                </span>
+
+            </div>
+
+
+            <div class="car-section">
+
+                <div class="car-image">
+
+                    <img
+                        src="${image}"
+                        alt="${carName}"
+                    >
+
+                </div>
+
+
+                <div>
+
+                    <h3>
+                        ${carName}
+                    </h3>
+
+
+                    <p>
+                        Brand:
+                        ${carBrand}
+                    </p>
+
+
+                    <p>
+                        Car ID:
+                        ${booking.car_id}
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="booking-info">
+
+
+                <div class="info">
+
+                    <span>
+                        Booking ID
+                    </span>
+
+
+                    <strong>
+                        #${bookingId}
+                    </strong>
+
+                </div>
+
+
+                <div class="info">
+
+                    <span>
+                        Car ID
+                    </span>
+
+
+                    <strong>
+                        ${booking.car_id}
+                    </strong>
+
+                </div>
+
+
+                <div class="info">
+
+                    <span>
+                        Rental Duration
+                    </span>
+
+
+                    <strong>
+
+                        ${booking.days}
+
+                        ${
+                            booking.days === 1
+                                ? "Day"
+                                : "Days"
+                        }
+
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="money-box">
+
+                <div class="label">
+                    Total Booking Amount
+                </div>
+
+
+                <div class="usd">
+                    $${totalUSD.toFixed(2)}
+                </div>
+
+            </div>
+
+
+            ${actionHTML}
+
+
+        </div>
+
+    `;
+
+}
+
+
+
+/* ========================================================= */
+/* SHOW ALL BOOKINGS */
+/* ========================================================= */
+
+async function renderAllBookings() {
+
+    const container =
+        document.getElementById(
+            "bookingsContainer"
+        );
+
+
+    container.innerHTML = `
+
+        <div class="message">
+            Loading bookings...
+        </div>
+
+    `;
+
+
+    if (
+        !currentBookings ||
+        currentBookings.length === 0
+    ) {
+
+        container.innerHTML = `
+
+            <div class="message">
+
+                You have no bookings yet.
+
+                <br><br>
+
+                <a href="/cars">
+                    Browse Cars
+                </a>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    try {
+
+        const cards = [];
+
+
+        for (
+            const booking
+            of currentBookings
+        ) {
+
+            const car =
+                await getCar(
+                    booking.car_id
+                );
+
+
+            cards.push(
+                buildBookingCard(
+                    booking,
+                    car,
+                    true
+                )
+            );
+
+        }
+
+
+        container.innerHTML =
+            cards.join("");
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Render bookings error:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="message">
+                Unable to load bookings.
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* LOAD ALL BOOKINGS */
+/* ========================================================= */
+
+async function loadBookings() {
+
+    const container =
+        document.getElementById(
+            "bookingsContainer"
+        );
+
+
+    if (!userId) {
+
+        container.innerHTML = `
+
+            <div class="message">
+
+                Please login first.
+
+                <br><br>
+
+                <a href="/login">
+                    Go to Login
+                </a>
+
+            </div>
+
+        `;
+
+
+        return;
+
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/users/${userId}/bookings`
+            );
+
+
+        const bookings =
+            await response.json();
+
+
+        if (
+            !response.ok ||
+            !Array.isArray(bookings)
+        ) {
+
+            throw new Error(
+                "Unable to load bookings"
+            );
+
+        }
+
+
+        currentBookings =
+            bookings;
+
+
+        window.currentBookings =
+            bookings;
+
+
+        if (
+            bookings.length === 0
+        ) {
+
+            container.innerHTML = `
+
+                <div class="message">
+
+                    You have no bookings yet.
+
+                    <br><br>
+
+                    <a href="/cars">
+                        Browse Cars
+                    </a>
+
+                </div>
+
+            `;
+
+
+            return;
+
+        }
+
+
+        await renderAllBookings();
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "LOAD BOOKINGS ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="message">
+
+                Unable to load bookings.
+
+                <br><br>
+
+                <small>
+                    ${error.message}
+                </small>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* SHOW ONLY ONE BOOKING */
+/* ========================================================= */
+
+async function showOnlyBooking(
+    bookingId
+) {
+
+    const container =
+        document.getElementById(
+            "bookingsContainer"
+        );
+
+
+    container.innerHTML = `
+
+        <div class="message">
+            Loading booking...
+        </div>
+
+    `;
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/users/${userId}/bookings/${bookingId}`
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "SINGLE BOOKING RESPONSE:",
+            result
+        );
+
+
+        if (
+            !response.ok ||
+            !result.success
+        ) {
+
+            throw new Error(
+                result.message ||
+                "Unable to load booking"
+            );
+
+        }
+
+
+        const booking =
+            result.booking;
+
+
+        if (!booking) {
+
+            throw new Error(
+                "Booking data not found"
+            );
+
+        }
+
+
+        const carResponse =
+            await fetch(
+                `/api/cars/${booking.car_id}`
+            );
+
+
+        if (!carResponse.ok) {
+
+            throw new Error(
+                "Unable to load car details"
+            );
+
+        }
+
+
+        const car =
+            await carResponse.json();
+
+
+        container.innerHTML = `
+
+            <button
+                type="button"
+
+                onclick="
+                    renderAllBookings()
+                "
+
+                style="
+                    margin-bottom:20px;
+                    padding:10px 15px;
+                    border:1px solid #d1d5db;
+                    border-radius:8px;
+                    background:white;
+                    cursor:pointer;
+                    font-weight:bold;
+                "
+            >
+                ← Back to All Bookings
+            </button>
+
+
+            ${buildBookingCard(
+                booking,
+                car,
+                false
+            )}
+
+        `;
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "SINGLE BOOKING ERROR:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+            <div class="message">
+
+                Unable to load booking.
+
+                <br><br>
+
+                <small>
+                    ${error.message}
+                </small>
+
+                <br><br>
+
+                <button
+                    onclick="renderAllBookings()"
+
+                    style="
+                        padding:10px 15px;
+                        border:1px solid #ccc;
+                        border-radius:8px;
+                        background:white;
+                        cursor:pointer;
+                    "
+                >
+                    ← Back to All Bookings
+                </button>
+
+            </div>
+
+        `;
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* PAYMENT */
+/* ========================================================= */
+
+async function payNow(
+    bookingId
+) {
+
+    const currentUserId =
+        localStorage.getItem(
+            "user_id"
+        );
+
+
+    if (!currentUserId) {
+
+        alert(
+            "Please login first."
+        );
+
+
+        return;
+
+    }
+
+
+    const confirmPayment =
+        confirm(
+            "Do you want to pay for this booking?"
+        );
+
+
+    if (!confirmPayment) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/payments?booking_id=${bookingId}&user_id=${currentUserId}`,
+                {
+                    method: "POST"
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        if (
+            response.ok &&
+            result.payment_id
+        ) {
+
+            walletBalance =
+                Number(
+                    result.remaining_balance
+                );
+
+
+            updateWalletUI();
+
+
+            alert(
+
+                "Payment successful!\n\n" +
+
+                "Payment ID: " +
+                result.payment_id +
+
+                "\nBooking ID: " +
+
+                (
+                    result.booking_id ||
+                    bookingId
+                ) +
+
+                "\nAmount: $" +
+
+                Number(
+                    result.amount_usd || 0
+                ).toFixed(2) +
+
+                "\nRemaining Balance: $" +
+
+                Number(
+                    result.remaining_balance
+                ).toFixed(2) +
+
+                "\n\nStatus: Payment Successful"
+
+            );
+
+
+            await loadWallet();
+
+
+            await loadBookings();
+
+
+            return;
+
+        }
+
+
+        alert(
+
+            "Payment failed.\n\n" +
+
+            (
+                result.message ||
+                "Payment failed."
+            )
+
+        );
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Payment Error:",
+            error
+        );
+
+
+        alert(
+            "Payment failed. Please check backend."
+        );
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* CANCEL BOOKING */
+/* ========================================================= */
+
+async function cancelBooking(
+    bookingId
+) {
+
+    const confirmCancel =
+        confirm(
+
+            "Are you sure you want to cancel Booking #" +
+            bookingId +
+            "?"
+
+        );
+
+
+    if (!confirmCancel) {
+        return;
+    }
+
+
+    try {
+
+        const response =
+            await fetch(
+                `/api/users/${userId}/bookings`,
+                {
+
+                    method: "POST",
+
+                    headers: {
+
+                        "Content-Type":
+                            "application/json"
+
+                    },
+
+                    body: JSON.stringify({
+
+                        booking_id:
+                            bookingId,
+
+                        status:
+                            "Cancelled"
+
+                    })
+
+                }
+            );
+
+
+        const result =
+            await response.json();
+
+
+        console.log(
+            "CANCEL URL:",
+            `/api/users/${userId}/bookings`
+        );
+
+
+        console.log(
+            "CANCEL STATUS:",
+            response.status
+        );
+
+
+        console.log(
+            "CANCEL RESPONSE:",
+            result
+        );
+
+
+        if (
+            response.ok &&
+            result.success
+        ) {
+
+
+            if (
+                result.wallet &&
+                result.wallet.balance !== undefined
+            ) {
+
+                walletBalance =
+                    Number(
+                        result.wallet.balance
+                    );
+
+
+                updateWalletUI();
+
+            }
+
+
+            const refundAmount =
+                Number(
+
+                    result.payment?.amount ||
+
+                    result.refund_amount ||
+
+                    0
+
+                );
+
+
+            if (
+                refundAmount > 0
+            ) {
+
+                alert(
+
+                    "Booking #" +
+                    bookingId +
+                    " cancelled successfully.\n\n" +
+
+                    "Refund Amount: $" +
+                    refundAmount.toFixed(2)
+
+                );
+
+            }
+
+            else {
+
+                alert(
+
+                    "Booking #" +
+                    bookingId +
+                    " cancelled successfully."
+
+                );
+
+            }
+
+
+            await loadWallet();
+
+
+            await loadBookings();
+
+
+            return;
+
+        }
+
+
+        alert(
+
+            result.message ||
+            "Cancellation failed."
+
+        );
+
+
+        await loadBookings();
+
+    }
+
+
+    catch (error) {
+
+        console.error(
+            "Cancellation error:",
+            error
+        );
+
+
+        alert(
+            "Cancellation failed. Please check backend."
+        );
+
+
+        await loadBookings();
+
+    }
+
+}
+
+
+
+/* ========================================================= */
+/* START PAGE */
+/* ========================================================= */
+
+async function startPage() {
+
+    if (!userId) {
+
+        await loadBookings();
+
+        return;
+
+    }
+
+
+    await loadWallet();
+
+
+    await loadSelectedCar();
+
+
+    await loadBookings();
+
+}
+
+
+
+/* ========================================================= */
+/* START */
+/* ========================================================= */
+
+startPage();
+
+
+</script>
+
+
+</body>
+
+</html>

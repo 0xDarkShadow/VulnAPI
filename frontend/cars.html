@@ -1,0 +1,1449 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Cars - VulnAPI</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: #f5f7fa;
+
+            color: #222;
+
+        }
+
+
+        /* =========================
+           HEADER
+        ========================= */
+
+        header {
+
+            background: #111827;
+
+            color: white;
+
+            padding: 20px 60px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+        }
+
+
+        .logo {
+
+            font-size: 25px;
+
+            font-weight: bold;
+
+        }
+
+
+        nav a {
+
+            color: white;
+
+            text-decoration: none;
+
+            margin-left: 25px;
+
+            font-size: 15px;
+
+        }
+
+
+        nav a:hover {
+
+            text-decoration: underline;
+
+        }
+
+
+        /* =========================
+           CONTAINER
+        ========================= */
+
+        .container {
+
+            max-width: 1200px;
+
+            margin: 50px auto;
+
+            padding: 20px;
+
+        }
+
+
+        /* =========================
+           PAGE TITLE
+        ========================= */
+
+        .page-title {
+
+            text-align: center;
+
+            margin-bottom: 40px;
+
+        }
+
+
+        .page-title h2 {
+
+            font-size: 36px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .page-title p {
+
+            color: #666;
+
+            font-size: 17px;
+
+        }
+
+
+        /* =========================
+           CARS GRID
+        ========================= */
+
+        #cars-container {
+
+            display: grid;
+
+            grid-template-columns:
+                repeat(
+                    auto-fit,
+                    minmax(280px, 1fr)
+                );
+
+            gap: 25px;
+
+        }
+
+
+        /* =========================
+           CAR CARD
+        ========================= */
+
+        .car-card {
+
+            background: white;
+
+            border-radius: 15px;
+
+            overflow: hidden;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+
+            padding: 20px;
+
+            transition: 0.2s;
+
+        }
+
+
+        .car-card:hover {
+
+            transform: translateY(-4px);
+
+        }
+
+
+        .car-image {
+
+            width: 100%;
+
+            height: 220px;
+
+            background: #e5e7eb;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .car-image img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+
+        }
+
+
+        .car-card h3 {
+
+            font-size: 24px;
+
+            margin-bottom: 8px;
+
+        }
+
+
+        .brand {
+
+            color: #6b7280;
+
+            font-size: 17px;
+
+            margin-bottom: 15px;
+
+        }
+
+
+        .price {
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .view-btn {
+
+            width: 100%;
+
+            padding: 13px;
+
+            border: none;
+
+            border-radius: 7px;
+
+            background: #111827;
+
+            color: white;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+        }
+
+
+        .view-btn:hover {
+
+            background: #374151;
+
+        }
+
+
+        /* =========================
+           DETAILS
+        ========================= */
+
+        #details-container {
+
+            display: none;
+
+        }
+
+
+        .back-btn {
+
+            display: inline-block;
+
+            margin-bottom: 25px;
+
+            color: #2563eb;
+
+            text-decoration: none;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .details-card {
+
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 35px;
+
+            box-shadow:
+                0 5px 20px
+                rgba(0, 0, 0, 0.08);
+
+        }
+
+
+        .details-image {
+
+            width: 100%;
+
+            height: 400px;
+
+            background: #e5e7eb;
+
+            border-radius: 12px;
+
+            overflow: hidden;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .details-image img {
+
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: contain;
+
+        }
+
+
+        .details-info h1 {
+
+            font-size: 38px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .details-brand {
+
+            color: #6b7280;
+
+            font-size: 21px;
+
+            margin-bottom: 20px;
+
+        }
+
+
+        .details-price {
+
+            font-size: 28px;
+
+            font-weight: bold;
+
+            color: #2563eb;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .details-boxes {
+
+            display: flex;
+
+            gap: 20px;
+
+            flex-wrap: wrap;
+
+            margin-bottom: 30px;
+
+        }
+
+
+        .detail-box {
+
+            background: #f3f4f6;
+
+            padding: 18px 25px;
+
+            border-radius: 10px;
+
+            min-width: 150px;
+
+        }
+
+
+        .detail-box span {
+
+            display: block;
+
+            color: #6b7280;
+
+            font-size: 13px;
+
+            margin-bottom: 6px;
+
+        }
+
+
+        .detail-box strong {
+
+            font-size: 17px;
+
+        }
+
+
+        .book-btn {
+
+            width: 100%;
+
+            padding: 16px;
+
+            border: none;
+
+            border-radius: 8px;
+
+            background: #2563eb;
+
+            color: white;
+
+            font-size: 18px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+        }
+
+
+        .book-btn:hover {
+
+            background: #1d4ed8;
+
+        }
+
+
+        .message {
+
+            text-align: center;
+
+            padding: 50px;
+
+            font-size: 20px;
+
+        }
+
+
+        /* =========================
+           FOOTER
+        ========================= */
+
+        footer {
+
+            text-align: center;
+
+            padding: 25px;
+
+            background: #111827;
+
+            color: #aaa;
+
+            margin-top: 50px;
+
+        }
+
+
+        /* =========================
+           MOBILE
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            header {
+
+                padding: 20px;
+
+                flex-direction: column;
+
+                gap: 15px;
+
+            }
+
+
+            nav {
+
+                display: flex;
+
+                flex-wrap: wrap;
+
+                justify-content: center;
+
+                gap: 10px;
+
+            }
+
+
+            nav a {
+
+                margin-left: 8px;
+
+                margin-right: 8px;
+
+            }
+
+
+            .details-card {
+
+                padding: 20px;
+
+            }
+
+
+            .details-image {
+
+                height: 300px;
+
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =========================
+     HEADER
+========================= -->
+
+<header>
+
+
+    <div class="logo">
+
+        VulnAPI
+
+    </div>
+
+
+    <nav>
+
+
+        <a href="/">
+
+            Home
+
+        </a>
+
+
+        <a href="/cars">
+
+            Cars
+
+        </a>
+
+
+        <a href="/roadsideassistance">
+
+            Roadside Assistance
+
+        </a>
+
+
+        <a href="/booking">
+
+            My Bookings
+
+        </a>
+
+
+        <!-- =========================
+             MY PROFILE
+
+             Hidden by default
+        ========================== -->
+
+        <a
+            href="/myprofile"
+            id="profileLink"
+            style="display: none;"
+            onclick="openProfile(); return false;"
+        >
+
+            My Profile
+
+        </a>
+
+
+        <!-- =========================
+             LOGIN
+        ========================== -->
+
+        <a
+            href="/login"
+            id="loginLink"
+        >
+
+            Login
+
+        </a>
+
+
+        <!-- =========================
+             LOGOUT
+        ========================== -->
+
+        <a
+            href="#"
+            id="logoutLink"
+            style="display: none;"
+            onclick="logout(); return false;"
+        >
+
+            Logout
+
+        </a>
+
+
+    </nav>
+
+
+</header>
+
+
+
+<!-- =========================
+     CARS LIST
+========================= -->
+
+<div
+    id="cars-section"
+    class="container"
+>
+
+
+    <div class="page-title">
+
+
+        <h2>
+
+            Available Cars
+
+        </h2>
+
+
+        <p>
+
+            Choose a car for your journey.
+
+        </p>
+
+
+    </div>
+
+
+    <div id="cars-container">
+
+        Loading cars...
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================
+     CAR DETAILS
+========================= -->
+
+<div
+    id="details-container"
+    class="container"
+>
+
+
+    <a
+        class="back-btn"
+        onclick="showCars()"
+    >
+
+        ← Back to Cars
+
+    </a>
+
+
+    <div class="details-card">
+
+
+        <div class="details-image">
+
+
+            <img
+                id="details-image"
+                src=""
+                alt="Car"
+            >
+
+
+        </div>
+
+
+        <div class="details-info">
+
+
+            <h1 id="details-name">
+
+                Car
+
+            </h1>
+
+
+            <div
+                id="details-brand"
+                class="details-brand"
+            >
+
+                Brand
+
+            </div>
+
+
+            <div
+                id="details-price"
+                class="details-price"
+            >
+
+                $0.00 / day
+
+            </div>
+
+
+            <div class="details-boxes">
+
+
+                <div class="detail-box">
+
+
+                    <span>
+
+                        Brand
+
+                    </span>
+
+
+                    <strong id="details-brand-box">
+
+                        -
+
+                    </strong>
+
+
+                </div>
+
+
+                <div class="detail-box">
+
+
+                    <span>
+
+                        Price
+
+                    </span>
+
+
+                    <strong id="details-price-box">
+
+                        -
+
+                    </strong>
+
+
+                </div>
+
+
+            </div>
+
+
+            <button
+                class="book-btn"
+                onclick="bookCar()"
+            >
+
+                Book Now
+
+            </button>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+
+<!-- =========================
+     FOOTER
+========================= -->
+
+<footer>
+
+
+    <p>
+
+        © 2026 VulnAPI
+
+    </p>
+
+
+</footer>
+
+
+
+<script>
+
+
+/* =========================
+   LOGIN / LOGOUT NAVBAR
+========================= */
+
+
+function updateNavbar() {
+
+
+    const currentUserId =
+        localStorage.getItem(
+            "user_id"
+        );
+
+
+    const currentToken =
+        localStorage.getItem(
+            "access_token"
+        );
+
+
+    const loginLink =
+        document.getElementById(
+            "loginLink"
+        );
+
+
+    const logoutLink =
+        document.getElementById(
+            "logoutLink"
+        );
+
+
+    const profileLink =
+        document.getElementById(
+            "profileLink"
+        );
+
+
+    /* =========================
+       LOGGED IN
+    ========================== */
+
+    if (
+        currentUserId &&
+        currentToken
+    ) {
+
+
+        loginLink.style.display =
+            "none";
+
+
+        logoutLink.style.display =
+            "inline-block";
+
+
+        profileLink.style.display =
+            "inline-block";
+
+
+    }
+
+
+    /* =========================
+       LOGGED OUT
+    ========================== */
+
+    else {
+
+
+        loginLink.style.display =
+            "inline-block";
+
+
+        logoutLink.style.display =
+            "none";
+
+
+        profileLink.style.display =
+            "none";
+
+    }
+
+}
+
+
+
+/* =========================
+   OPEN PROFILE
+========================= */
+
+function openProfile() {
+
+
+    const currentUserId =
+        localStorage.getItem(
+            "user_id"
+        );
+
+
+    const currentToken =
+        localStorage.getItem(
+            "access_token"
+        );
+
+
+    if (
+        currentUserId &&
+        currentToken
+    ) {
+
+
+        window.location.href =
+            "/myprofile";
+
+
+    }
+
+
+    else {
+
+
+        window.location.href =
+            "/login";
+
+    }
+
+}
+
+
+
+/* =========================
+   LOGOUT
+========================= */
+
+function logout() {
+
+
+    localStorage.removeItem(
+        "user_id"
+    );
+
+
+    localStorage.removeItem(
+        "username"
+    );
+
+
+    localStorage.removeItem(
+        "access_token"
+    );
+
+
+    localStorage.removeItem(
+        "role"
+    );
+
+
+    localStorage.removeItem(
+        "profile_user_id"
+    );
+
+
+    window.location.href =
+        "/login";
+
+}
+
+
+
+/* =========================
+   USD CONVERSION
+========================= */
+
+/*
+    Practice lab conversion:
+
+    $1 = ₹90
+*/
+
+const USD_RATE = 90;
+
+
+
+/* =========================
+   CAR IMAGES
+========================= */
+
+const carImages = {
+
+
+    1:
+        "images/defender.jpg",
+
+
+    2:
+        "images/x5.jpg",
+
+
+    3:
+        "images/cclass.jpg",
+
+
+    4:
+        "images/q5.jpg",
+
+
+    5:
+        "images/FORTUNER.jpg",
+
+
+    6:
+        "images/xc90.jpg"
+
+
+};
+
+
+
+/* =========================
+   SELECTED CAR
+========================= */
+
+let selectedCar = null;
+
+
+
+/* =========================
+   LOAD ALL CARS
+========================= */
+
+async function loadCars() {
+
+
+    const container =
+        document.getElementById(
+            "cars-container"
+        );
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                "/api/cars"
+            );
+
+
+        const cars =
+            await response.json();
+
+
+        container.innerHTML = "";
+
+
+        cars.forEach(
+            car => {
+
+
+                const card =
+                    document.createElement(
+                        "div"
+                    );
+
+
+                card.className =
+                    "car-card";
+
+
+                /* =========================
+                   USD PRICE
+                ========================== */
+
+                const priceUSD =
+                    (
+                        Number(
+                            car.price
+                        ) / USD_RATE
+                    ).toFixed(2);
+
+
+                card.innerHTML = `
+
+
+                    <div class="car-image">
+
+
+                        <img
+                            src="${carImages[car.id]}"
+                            alt="${car.brand} ${car.name}"
+
+                            onerror="
+                                this.style.display='none';
+                            "
+                        >
+
+
+                    </div>
+
+
+                    <h3>
+
+                        ${car.name}
+
+                    </h3>
+
+
+                    <p class="brand">
+
+                        ${car.brand}
+
+                    </p>
+
+
+                    <p class="price">
+
+                        $${priceUSD}
+                        / day
+
+                    </p>
+
+
+                    <button
+                        class="view-btn"
+                        onclick="showDetails(${car.id})"
+                    >
+
+                        View Details
+
+                    </button>
+
+
+                `;
+
+
+                container.appendChild(
+                    card
+                );
+
+
+            }
+        );
+
+
+    }
+
+
+    catch (error) {
+
+
+        console.error(
+            "Error loading cars:",
+            error
+        );
+
+
+        container.innerHTML = `
+
+
+            <div class="message">
+
+                Unable to load cars.
+
+            </div>
+
+
+        `;
+
+    }
+
+}
+
+
+
+/* =========================
+   SHOW CAR DETAILS
+========================= */
+
+async function showDetails(
+    carId
+) {
+
+
+    try {
+
+
+        const response =
+            await fetch(
+                `/api/cars/${carId}`
+            );
+
+
+        const car =
+            await response.json();
+
+
+        if (!car.id) {
+
+
+            alert(
+                "Car not found."
+            );
+
+
+            return;
+
+        }
+
+
+        selectedCar =
+            car;
+
+
+        /* =========================
+           HIDE CARS
+        ========================== */
+
+        document.getElementById(
+            "cars-section"
+        ).style.display =
+            "none";
+
+
+        /* =========================
+           SHOW DETAILS
+        ========================== */
+
+        document.getElementById(
+            "details-container"
+        ).style.display =
+            "block";
+
+
+        /* =========================
+           IMAGE
+        ========================== */
+
+        document.getElementById(
+            "details-image"
+        ).src =
+            carImages[
+                car.id
+            ];
+
+
+        /* =========================
+           NAME
+        ========================== */
+
+        document.getElementById(
+            "details-name"
+        ).innerText =
+            car.name;
+
+
+        /* =========================
+           BRAND
+        ========================== */
+
+        document.getElementById(
+            "details-brand"
+        ).innerText =
+            car.brand;
+
+
+        /* =========================
+           USD PRICE
+        ========================== */
+
+        const priceUSD =
+            (
+                Number(
+                    car.price
+                ) / USD_RATE
+            ).toFixed(2);
+
+
+        document.getElementById(
+            "details-price"
+        ).innerText =
+            "$" +
+            priceUSD +
+            " / day";
+
+
+        /* =========================
+           BRAND BOX
+        ========================== */
+
+        document.getElementById(
+            "details-brand-box"
+        ).innerText =
+            car.brand;
+
+
+        /* =========================
+           PRICE BOX
+        ========================== */
+
+        document.getElementById(
+            "details-price-box"
+        ).innerText =
+            "$" +
+            priceUSD +
+            "/day";
+
+
+        window.scrollTo(
+            0,
+            0
+        );
+
+    }
+
+
+    catch (error) {
+
+
+        console.error(
+            "Error loading car details:",
+            error
+        );
+
+
+        alert(
+            "Unable to load car details."
+        );
+
+    }
+
+}
+
+
+
+/* =========================
+   BACK TO CARS
+========================= */
+
+function showCars() {
+
+
+    document.getElementById(
+        "details-container"
+    ).style.display =
+        "none";
+
+
+    document.getElementById(
+        "cars-section"
+    ).style.display =
+        "block";
+
+
+    selectedCar =
+        null;
+
+
+    window.scrollTo(
+        0,
+        0
+    );
+
+}
+
+
+
+/* =========================
+   BOOK CAR
+========================= */
+
+function bookCar() {
+
+
+    if (!selectedCar) {
+
+
+        alert(
+            "Please select a car first."
+        );
+
+
+        return;
+
+    }
+
+
+    /*
+       Clean booking URL
+    */
+
+    window.location.href =
+        `/booking?car_id=${selectedCar.id}`;
+
+}
+
+
+
+/* =========================
+   START
+========================= */
+
+updateNavbar();
+
+loadCars();
+
+
+</script>
+
+
+</body>
+
+</html>

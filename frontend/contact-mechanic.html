@@ -1,0 +1,901 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>Roadside Assistance - VulnAPI</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+
+            font-family: Arial, sans-serif;
+
+            background: #f5f5f5;
+
+            color: #222;
+
+        }
+
+
+        /* ================================
+           HEADER
+        ================================= */
+
+        header {
+
+            background: #111;
+
+            color: white;
+
+            padding: 20px 50px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+        }
+
+
+        header h1 {
+
+            font-size: 26px;
+
+        }
+
+
+        nav a {
+
+            color: white;
+
+            text-decoration: none;
+
+            margin-left: 25px;
+
+            font-size: 14px;
+
+        }
+
+
+        nav a:hover {
+
+            color: #ccc;
+
+        }
+
+
+        /* ================================
+           MAIN CONTAINER
+        ================================= */
+
+        .container {
+
+            max-width: 600px;
+
+            margin: 80px auto;
+
+            padding: 20px;
+
+        }
+
+
+        /* ================================
+           CARD
+        ================================= */
+
+        .card {
+
+            background: white;
+
+            border-radius: 15px;
+
+            padding: 45px 40px;
+
+            box-shadow:
+                0 4px 20px rgba(
+                    0,
+                    0,
+                    0,
+                    0.10
+                );
+
+        }
+
+
+        /* ================================
+           TITLE
+        ================================= */
+
+        .card h2 {
+
+            font-size: 28px;
+
+            margin-bottom: 10px;
+
+        }
+
+
+        .subtitle {
+
+            color: #666;
+
+            font-size: 15px;
+
+            line-height: 1.5;
+
+            margin-bottom: 35px;
+
+        }
+
+
+        /* ================================
+           FORM
+        ================================= */
+
+        label {
+
+            display: block;
+
+            font-weight: bold;
+
+            margin-bottom: 9px;
+
+            font-size: 15px;
+
+        }
+
+
+        select {
+
+            width: 100%;
+
+            padding: 14px;
+
+            border: 1px solid #ccc;
+
+            border-radius: 7px;
+
+            background: white;
+
+            font-size: 15px;
+
+            cursor: pointer;
+
+            margin-bottom: 25px;
+
+        }
+
+
+        select:focus {
+
+            outline: none;
+
+            border-color: #111;
+
+        }
+
+
+        /* ================================
+           BUTTON
+        ================================= */
+
+        .contact-btn {
+
+            width: 100%;
+
+            padding: 14px;
+
+            background: #111;
+
+            color: white;
+
+            border: none;
+
+            border-radius: 7px;
+
+            font-size: 16px;
+
+            cursor: pointer;
+
+        }
+
+
+        .contact-btn:hover {
+
+            background: #333;
+
+        }
+
+
+        .contact-btn:disabled {
+
+            background: #777;
+
+            cursor: not-allowed;
+
+        }
+
+
+        /* ================================
+           RESPONSE
+        ================================= */
+
+        .response-section {
+
+            margin-top: 30px;
+
+            padding-top: 25px;
+
+            border-top: 1px solid #eee;
+
+        }
+
+
+        .response-section h3 {
+
+            font-size: 19px;
+
+            margin-bottom: 12px;
+
+        }
+
+
+        .response-box {
+
+            background: #f7f7f7;
+
+            border: 1px solid #ddd;
+
+            border-radius: 8px;
+
+            padding: 18px;
+
+            color: #444;
+
+            line-height: 1.6;
+
+            font-size: 14px;
+
+            min-height: 75px;
+
+            white-space: pre-line;
+
+        }
+
+
+        .success {
+
+            border-left: 4px solid #222;
+
+        }
+
+
+        .error {
+
+            border-left: 4px solid #999;
+
+        }
+
+
+        /* ================================
+           BACK LINK
+        ================================= */
+
+        .back-link {
+
+            display: block;
+
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #555;
+
+            text-decoration: none;
+
+            font-size: 14px;
+
+        }
+
+
+        .back-link:hover {
+
+            color: #111;
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================
+     HEADER
+====================================== -->
+
+<header>
+
+
+    <h1>
+        VulnAPI
+    </h1>
+
+
+    <nav>
+
+
+        <a href="/">
+            Home
+        </a>
+
+
+        <a href="/cars">
+            Cars
+        </a>
+
+
+        <a href="/roadsideassistance">
+            Roadside Assistance
+        </a>
+
+
+        <a href="/booking">
+            My Bookings
+        </a>
+
+
+        <!-- =================================
+             MY PROFILE
+
+             Hidden by default.
+             Shown only when user is logged in.
+        ================================== -->
+
+        <a
+            href="/myprofile"
+            id="profileLink"
+            style="display: none;"
+            onclick="openProfile(); return false;"
+        >
+            My Profile
+        </a>
+
+
+        <!-- =================================
+             LOGIN
+
+             Shown when user is logged out.
+        ================================== -->
+
+        <a
+            href="/login"
+            id="loginLink"
+        >
+            Login
+        </a>
+
+
+        <!-- =================================
+             LOGOUT
+
+             Shown when user is logged in.
+        ================================== -->
+
+        <a
+            href="#"
+            id="logoutLink"
+            style="display: none;"
+            onclick="logout(); return false;"
+        >
+            Logout
+        </a>
+
+
+    </nav>
+
+
+</header>
+
+
+
+<!-- =====================================
+     MAIN
+====================================== -->
+
+<div class="container">
+
+
+    <div class="card">
+
+
+        <h2>
+            🔧 Roadside Assistance
+        </h2>
+
+
+        <p class="subtitle">
+
+            Need help with your car?
+            Select a mechanic service and
+            request roadside assistance.
+
+        </p>
+
+
+
+        <!-- =================================
+             MECHANIC SELECTION
+        ================================== -->
+
+        <label for="mechanic">
+
+            Select Mechanic
+
+        </label>
+
+
+        <select id="mechanic">
+
+
+            <option value="http://127.0.0.1:8000">
+
+                AutoCare Services
+
+            </option>
+
+
+            <option value="http://127.0.0.1:8000">
+
+                City Motors Assistance
+
+            </option>
+
+
+            <option value="http://127.0.0.1:8000">
+
+                QuickFix Mechanics
+
+            </option>
+
+
+        </select>
+
+
+
+        <!-- =================================
+             CONTACT BUTTON
+        ================================== -->
+
+        <button
+            id="contactButton"
+            class="contact-btn"
+            onclick="contactMechanic()"
+        >
+
+            Request Roadside Assistance
+
+        </button>
+
+
+
+        <!-- =================================
+             RESPONSE
+        ================================== -->
+
+        <div class="response-section">
+
+
+            <h3>
+
+                Service Status
+
+            </h3>
+
+
+            <div
+                id="response"
+                class="response-box"
+            >
+
+                Select a mechanic and request
+                roadside assistance.
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+
+    <!-- =================================
+         BACK TO CARS
+    ================================== -->
+
+    <a
+        href="/cars"
+        class="back-link"
+    >
+
+        ← Back to Cars
+
+    </a>
+
+
+</div>
+
+
+
+<script>
+
+
+    // =====================================
+    // LOGIN STATUS
+    // =====================================
+
+    function checkLoginStatus() {
+
+
+        const userId =
+            localStorage.getItem(
+                "user_id"
+            );
+
+
+        const accessToken =
+            localStorage.getItem(
+                "access_token"
+            );
+
+
+        const loginLink =
+            document.getElementById(
+                "loginLink"
+            );
+
+
+        const logoutLink =
+            document.getElementById(
+                "logoutLink"
+            );
+
+
+        const profileLink =
+            document.getElementById(
+                "profileLink"
+            );
+
+
+
+        // =================================
+        // USER IS LOGGED IN
+        // =================================
+
+        if (
+            userId &&
+            accessToken
+        ) {
+
+
+            loginLink.style.display =
+                "none";
+
+
+            logoutLink.style.display =
+                "inline-block";
+
+
+            profileLink.style.display =
+                "inline-block";
+
+
+        }
+
+
+        // =================================
+        // USER IS NOT LOGGED IN
+        // =================================
+
+        else {
+
+
+            loginLink.style.display =
+                "inline-block";
+
+
+            logoutLink.style.display =
+                "none";
+
+
+            profileLink.style.display =
+                "none";
+
+        }
+
+    }
+
+
+
+    // =====================================
+    // OPEN PROFILE
+    // =====================================
+    //
+    // This prevents the profile link
+    // from opening if localStorage contains
+    // incomplete login information.
+    //
+    // =====================================
+
+    function openProfile() {
+
+
+        const currentUserId =
+            localStorage.getItem(
+                "user_id"
+            );
+
+
+        const currentAccessToken =
+            localStorage.getItem(
+                "access_token"
+            );
+
+
+        if (
+            currentUserId &&
+            currentAccessToken
+        ) {
+
+
+            window.location.href =
+                "/myprofile";
+
+
+        }
+
+        else {
+
+
+            window.location.href =
+                "/login";
+
+        }
+
+    }
+
+
+
+    // =====================================
+    // CONTACT MECHANIC
+    // =====================================
+
+    async function contactMechanic() {
+
+
+        const mechanic =
+            document.getElementById(
+                "mechanic"
+            );
+
+
+        const button =
+            document.getElementById(
+                "contactButton"
+            );
+
+
+        const responseBox =
+            document.getElementById(
+                "response"
+            );
+
+
+        // Get selected mechanic URL
+
+        const targetUrl =
+            mechanic.value;
+
+
+        // Disable button
+
+        button.disabled = true;
+
+
+        button.innerText =
+            "Contacting Mechanic...";
+
+
+        responseBox.className =
+            "response-box";
+
+
+        responseBox.innerText =
+            "Please wait while we contact the mechanic service...";
+
+
+        try {
+
+
+            // =================================
+            // SSRF LAB REQUEST
+            // =================================
+
+            const response =
+                await fetch(
+                    "/api/contact-mechanic",
+                    {
+
+                        method: "POST",
+
+                        headers: {
+
+                            "Content-Type":
+                                "application/json"
+
+                        },
+
+                        body:
+                            JSON.stringify({
+
+                                url:
+                                    targetUrl
+
+                            })
+
+                    }
+                );
+
+
+            const data =
+                await response.json();
+
+
+
+            // =================================
+            // SUCCESS
+            // =================================
+
+            if (data.success) {
+
+
+                responseBox.className =
+                    "response-box success";
+
+
+                responseBox.innerText =
+                    "✓ Request received successfully.\n\n" +
+                    "Our mechanic will contact you shortly.";
+
+            }
+
+
+            // =================================
+            // FAILURE
+            // =================================
+
+            else {
+
+
+                responseBox.className =
+                    "response-box error";
+
+
+                responseBox.innerText =
+                    "Unable to contact the mechanic service.\n\n" +
+                    "Please try again later.";
+
+            }
+
+
+        }
+
+
+        catch (error) {
+
+
+            console.error(
+                "Mechanic request error:",
+                error
+            );
+
+
+            responseBox.className =
+                "response-box error";
+
+
+            responseBox.innerText =
+                "Unable to contact the mechanic service.\n\n" +
+                "Please try again later.";
+
+        }
+
+
+        // Enable button again
+
+        button.disabled = false;
+
+
+        button.innerText =
+            "Request Roadside Assistance";
+
+    }
+
+
+
+    // =====================================
+    // LOGOUT
+    // =====================================
+
+    function logout() {
+
+
+        localStorage.removeItem(
+            "user_id"
+        );
+
+
+        localStorage.removeItem(
+            "username"
+        );
+
+
+        localStorage.removeItem(
+            "access_token"
+        );
+
+
+        localStorage.removeItem(
+            "role"
+        );
+
+
+        localStorage.removeItem(
+            "profile_user_id"
+        );
+
+
+        // Redirect to clean login URL
+
+        window.location.href =
+            "/login";
+
+    }
+
+
+
+    // =====================================
+    // RUN LOGIN CHECK
+    // =====================================
+
+    checkLoginStatus();
+
+
+</script>
+
+
+</body>
+
+</html>

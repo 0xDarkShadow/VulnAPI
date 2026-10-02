@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Register - VulnAPI</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+    }
+
+    body {
+        font-family: Arial, sans-serif;
+        background: #f5f7fa;
+        min-height: 100vh;
+    }
+
+    header {
+        background: #111827;
+        color: white;
+        padding: 20px 60px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .logo {
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    nav a {
+        color: white;
+        text-decoration: none;
+        margin-left: 25px;
+    }
+
+    .container {
+        width: 400px;
+        max-width: 90%;
+        margin: 60px auto;
+    }
+
+    .register-card {
+        background: white;
+        padding: 35px;
+        border-radius: 15px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 30px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        padding: 13px;
+        margin-bottom: 20px;
+        border: 1px solid #d1d5db;
+        border-radius: 7px;
+        font-size: 15px;
+    }
+
+    input:focus {
+        outline: none;
+        border-color: #2563eb;
+    }
+
+    button {
+        width: 100%;
+        padding: 14px;
+        background: #2563eb;
+        color: white;
+        border: none;
+        border-radius: 7px;
+        font-size: 16px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #1d4ed8;
+    }
+
+    #message {
+        text-align: center;
+        margin-top: 20px;
+        font-weight: bold;
+    }
+
+    .login {
+        text-align: center;
+        margin-top: 20px;
+        color: #555;
+    }
+
+    .login a {
+        color: #2563eb;
+        text-decoration: none;
+        font-weight: bold;
+    }
+</style>
+
+
+</head>
+
+<body>
+
+
+<header>
+
+    <div class="logo">
+        VulnAPI
+    </div>
+
+   <nav>
+
+    <a href="/">
+        Home
+    </a>
+
+    <a href="/cars">
+        Cars
+    </a>
+
+    <a href="/login">
+        Login
+    </a>
+
+</nav>
+</header>
+
+
+<div class="container">
+
+    <div class="register-card">
+
+        <h1>Create Account</h1>
+
+        <form id="registerForm">
+
+            <label for="username">
+                Username
+            </label>
+
+            <input
+                type="text"
+                id="username"
+                placeholder="Enter username"
+                required
+            >
+
+
+            <label for="email">
+                Email
+            </label>
+
+            <input
+                type="email"
+                id="email"
+                placeholder="Enter email"
+                required
+            >
+
+
+            <label for="password">
+                Password
+            </label>
+
+            <input
+                type="password"
+                id="password"
+                placeholder="Enter password"
+                required
+            >
+
+
+            <button type="submit">
+                Create Account
+            </button>
+
+        </form>
+
+
+        <div id="message"></div>
+
+
+        <div class="login">
+            Already have an account?
+            <a href="/login">
+    Login
+</a>
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+    document
+        .getElementById("registerForm")
+        .addEventListener("submit", async function(event) {
+
+            event.preventDefault();
+
+
+            const username =
+                document.getElementById("username").value;
+
+            const email =
+                document.getElementById("email").value;
+
+            const password =
+                document.getElementById("password").value;
+
+            const message =
+                document.getElementById("message");
+
+
+            try {
+
+                const response = await fetch(
+                    `http://127.0.0.1:8000/api/register?username=${encodeURIComponent(username)}&email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`,
+                    {
+                        method: "POST"
+                    }
+                );
+
+
+                const result = await response.json();
+
+
+               if (response.ok && result.user_id) {
+
+    message.style.color = "green";
+
+    message.innerText =
+        "Account created successfully! Redirecting to login...";
+
+    setTimeout(function() {
+        window.location.href = "login.html";
+    }, 1000);
+
+} else {
+
+                    message.style.color = "red";
+
+                    message.innerText =
+                        result.message || "Registration failed.";
+
+                }
+
+            } catch (error) {
+
+                console.error(error);
+
+                message.style.color = "red";
+
+                message.innerText =
+                    "Unable to connect to server.";
+
+            }
+
+        });
+
+</script>
+
+
+</body>
+
+</html>

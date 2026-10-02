@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>VulnAPI - Home</title>
+
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f5f5;
+            color: #222;
+        }
+
+
+        /* ================================
+           HEADER
+        ================================= */
+
+        header {
+            background: #111;
+            color: white;
+
+            padding: 20px 50px;
+
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+        }
+
+
+        header h1 {
+            font-size: 26px;
+        }
+
+
+        nav a {
+            color: white;
+
+            text-decoration: none;
+
+            margin-left: 25px;
+        }
+
+
+        nav a:hover {
+            color: #ccc;
+        }
+
+
+        /* ================================
+           HERO
+        ================================= */
+
+        .hero {
+            background: #222;
+
+            color: white;
+
+            padding: 80px 20px;
+
+            text-align: center;
+        }
+
+
+        .hero h2 {
+            font-size: 42px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .hero p {
+            font-size: 18px;
+
+            color: #ccc;
+        }
+
+
+        /* ================================
+           FEATURED CAR
+        ================================= */
+
+        .featured-section {
+            padding: 60px 20px;
+
+            text-align: center;
+        }
+
+
+        .featured-section h2 {
+            font-size: 30px;
+
+            margin-bottom: 35px;
+        }
+
+
+        .car-card {
+            background: white;
+
+            max-width: 650px;
+
+            margin: auto;
+
+            padding: 25px;
+
+            border-radius: 15px;
+
+            box-shadow:
+                0 4px 20px rgba(0,0,0,0.12);
+        }
+
+
+        .car-image {
+            width: 100%;
+
+            height: 350px;
+
+            background: #ddd;
+
+            border-radius: 10px;
+
+            overflow: hidden;
+
+            margin-bottom: 25px;
+        }
+
+
+        .car-image img {
+            width: 100%;
+
+            height: 100%;
+
+            object-fit: cover;
+
+            display: block;
+        }
+
+
+        .car-card h3 {
+            font-size: 28px;
+
+            margin-bottom: 10px;
+        }
+
+
+        .brand {
+            color: #666;
+
+            font-size: 18px;
+
+            margin-bottom: 25px;
+        }
+
+
+        .cars-btn {
+            display: inline-block;
+
+            padding: 13px 30px;
+
+            background: #111;
+
+            color: white;
+
+            text-decoration: none;
+
+            border-radius: 6px;
+
+            font-size: 16px;
+        }
+
+
+        .cars-btn:hover {
+            background: #333;
+        }
+
+
+        /* ================================
+           FOOTER
+        ================================= */
+
+        footer {
+            text-align: center;
+
+            padding: 25px;
+
+            background: #111;
+
+            color: #aaa;
+
+            margin-top: 40px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<header>
+
+    <h1>
+        VulnAPI
+    </h1>
+
+
+    <nav>
+
+        <a href="/">
+            Home
+        </a>
+
+
+        <a href="/cars">
+            Cars
+        </a>
+
+
+        <a href="/roadsideassistance">
+            Roadside Assistance
+        </a>
+
+
+        <a href="/booking">
+            My Bookings
+        </a>
+
+
+        <!-- Hidden until user logs in -->
+
+        <a
+            href="/myprofile"
+            id="profileLink"
+            style="display: none;"
+        >
+            My Profile
+        </a>
+
+
+        <!-- Visible when logged out -->
+
+        <a
+            href="/login"
+            id="loginLink"
+        >
+            Login
+        </a>
+
+
+        <!-- Visible when logged in -->
+
+        <a
+            href="#"
+            id="logoutLink"
+            style="display: none;"
+            onclick="logout(); return false;"
+        >
+            Logout
+        </a>
+
+    </nav>
+
+</header>
+
+
+
+<!-- ================================
+     HERO
+================================= -->
+
+<section class="hero">
+
+    <h2>
+        Welcome to VulnAPI
+    </h2>
+
+
+    <p>
+        Find the right car for your journey.
+    </p>
+
+</section>
+
+
+
+<!-- ================================
+     FEATURED CAR
+================================= -->
+
+<section class="featured-section">
+
+    <h2>
+        Featured Car
+    </h2>
+
+
+    <div class="car-card">
+
+
+        <div class="car-image">
+
+            <img
+                src="/images/x5.jpg"
+                alt="BMW X5"
+            >
+
+        </div>
+
+
+        <h3>
+            BMW X5
+        </h3>
+
+
+        <p class="brand">
+            BMW
+        </p>
+
+
+        <a
+            href="/cars?id=2"
+            class="cars-btn"
+        >
+            Explore Cars
+        </a>
+
+    </div>
+
+</section>
+
+
+
+<!-- ================================
+     FOOTER
+================================= -->
+
+<footer>
+
+    <p>
+        © 2026 VulnAPI
+    </p>
+
+</footer>
+
+
+
+<script>
+
+
+    // =====================================
+    // GET LOGIN INFORMATION
+    // =====================================
+
+    const userId =
+        localStorage.getItem("user_id");
+
+
+    const token =
+        localStorage.getItem("access_token");
+
+
+    const loginLink =
+        document.getElementById("loginLink");
+
+
+    const logoutLink =
+        document.getElementById("logoutLink");
+
+
+    const profileLink =
+        document.getElementById("profileLink");
+
+
+
+    // =====================================
+    // CHECK LOGIN
+    // =====================================
+
+    if (userId && token) {
+
+        // ================================
+        // USER IS LOGGED IN
+        // ================================
+
+        loginLink.style.display =
+            "none";
+
+
+        logoutLink.style.display =
+            "inline-block";
+
+
+        profileLink.style.display =
+            "inline-block";
+
+
+        loadDashboard();
+
+    }
+
+    else {
+
+        // ================================
+        // USER IS LOGGED OUT
+        // ================================
+
+        loginLink.style.display =
+            "inline-block";
+
+
+        logoutLink.style.display =
+            "none";
+
+
+        profileLink.style.display =
+            "none";
+
+    }
+
+
+
+    // =====================================
+    // JWT DASHBOARD REQUEST
+    // =====================================
+
+    async function loadDashboard() {
+
+        console.log(
+            "Sending JWT dashboard request..."
+        );
+
+
+        try {
+
+            const response =
+                await fetch(
+                    "/api/user-dashboard",
+                    {
+                        method: "GET",
+
+                        headers: {
+
+                            "Authorization":
+                                "Bearer " + token
+
+                        }
+
+                    }
+                );
+
+
+            console.log(
+                "JWT Dashboard Status:",
+                response.status
+            );
+
+
+            const data =
+                await response.json();
+
+
+            console.log(
+                "JWT Dashboard Response:",
+                data
+            );
+
+        }
+
+
+        catch (error) {
+
+            console.error(
+                "JWT Dashboard Error:",
+                error
+            );
+
+        }
+
+    }
+
+
+
+    // =====================================
+    // LOGOUT
+    // =====================================
+
+    function logout() {
+
+        localStorage.removeItem(
+            "user_id"
+        );
+
+
+        localStorage.removeItem(
+            "username"
+        );
+
+
+        localStorage.removeItem(
+            "access_token"
+        );
+
+
+        localStorage.removeItem(
+            "role"
+        );
+
+
+        window.location.href =
+            "/login";
+
+    }
+
+
+</script>
+
+
+</body>
+
+</html>
