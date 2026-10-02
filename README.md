@@ -36,34 +36,34 @@ SQLite
 Burp Suite can be placed between the browser and API during security testing to intercept and modify HTTP requests.
 
 ## Features
-User registration and login
-Car listing
-Car details
-Car booking
-Payment functionality
-User profile
-Wallet
-Password reset / OTP flow
-Roadside assistance
 
+- User registration and login
+- Car listing
+- Car details
+- Car booking
+- Payment functionality
+- User profile
+- Wallet
+- Password reset / OTP flow
+- Roadside assistance
 
 ## Security Testing Scenarios
 
 The application contains intentionally vulnerable scenarios for educational API security testing, including:
-BOLA
-BFLA
-BOPLA
-SSRF
-JWT security issues
-Parameter tampering
-Business logic vulnerabilities
-OTP brute-force / missing rate limiting
+
+- BOLA
+- BFLA
+- BOPLA
+- SSRF
+- JWT security issues
+- Parameter tampering
+- Business logic vulnerabilities
+- OTP brute-force / missing rate limiting
 
 ## Testing Tools
-Burp Suite
-Browser Developer Tools
-Swagger UI
-Postman
+- Burp Suite
+- Browser Developer Tools
+- Swagger UI
 
 ## Running the Project
 
@@ -82,6 +82,7 @@ http://127.0.0.1:8000
 Swagger API documentation:
 ```
 http://127.0.0.1:8000/docs
+
 ```
 ## Security Testing
 
@@ -89,14 +90,14 @@ The project is intended to be tested locally with Burp Suite.
 
 Example testing areas:
 
-BOLA
-BFLA
-BOPLA
-SSRF
-JWT
-Parameter Tampering
-Business Logic
-OTP Rate Limiting
+- BOLA
+- BFLA
+- BOPLA
+- SSRF
+- JWT
+- Parameter Tampering
+- Business Logic
+- OTP Rate Limiting
 
 ## Disclaimer
 
